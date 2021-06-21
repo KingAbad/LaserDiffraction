@@ -63,14 +63,19 @@ def gotodataapp(imported = False, imgimport = None, refimgimport = None):#startu
 
     global useold
     global norr
+    global userough
+    global usecurved
+    
     norr = IntVar()
     norr.set(1)
-    useold = BooleanVar()
-    useold.set(False)
     userough = BooleanVar()
     userough.set(True)
     usecurved = BooleanVar()
     usecurved.set(True)
+    useold = BooleanVar()
+    useold.set(False)
+
+
 
     def swapbool():#these two funcs fix a garbage collection bug created by the function structure of this tkinter section by taking the checkbutton var handling
         if (useold.get()):
@@ -84,7 +89,7 @@ def gotodataapp(imported = False, imgimport = None, refimgimport = None):#startu
         else:
             norr.set(1)
         print(norr.get())
-
+        
     def swapboolrough():
         if (userough.get()):
             userough.set(False)
@@ -98,7 +103,7 @@ def gotodataapp(imported = False, imgimport = None, refimgimport = None):#startu
         else:
             usecurved.set(True)
         print(usecurved.get())
-        
+
     
     global refve
     global refrve
@@ -114,8 +119,6 @@ def gotodataapp(imported = False, imgimport = None, refimgimport = None):#startu
     global edege
     global ymulte
     global xmulte
-    global roughe
-    global curvede
     refv = tk.Label(root, text="Reference value (nm) :").grid(row=1,column=1)
     refve = tk.Entry(root)
     refve.grid(row=1,column=2)
@@ -391,15 +394,15 @@ def Begin(imported = False, imgimport = None, refimgimport = None):#begin contai
     
     
     #intensity2 = intensity2 * float(ymulte.get())
-    print(intensity2)
+    #print(intensity2)
     intensity2 = intensity2.tolist()
     #for i in range(len(intensity2)):
         #for x in range(len(intensity2[i])):
     #    intensity2[i] = "{:.5f}".format(float(str(intensity2[i])))
     
-    print(intensity2)
+    #print(intensity2)
     #print(intensity2.tolist())
-    print(len(intensity2))
+    #print(len(intensity2))
     #intensity2 = map(Decimal,intensity2)
     #print(list(intensity2))
     #intensity2 = list(intensity2)
@@ -539,21 +542,23 @@ def Begin(imported = False, imgimport = None, refimgimport = None):#begin contai
     #ax2.plot(X_, Y_, 'r-', label='Intensity profile blue')#angleXaxis2_temp, intensity2, 'r-', label='Intensity profile blue')
     global ymulte
     global xmulte
-    global usecurved
-    global userough
+    global true
     for i in range(len(intensity2)):
         intensity2[i] = intensity2[i] + int(ymulte.get())
     def smooth(y, box_pts):
+        
         box = np.ones(box_pts)/box_pts
         y_smooth = np.convolve(y, box, mode='same')
         return y_smooth
+    global userough
+    global usecurved
     if usecurved.get():
         ax2.plot(angleXaxis2_temp, smooth(intensity2,int(xmulte.get())), 'r-', label='Intensity profile red')#intensity2, 'r-', label='Intensity profile blue')
         ax2.set_ylabel('Intensity');
         ax2.legend()
         
     if userough.get():
-        ax2.plot(angleXaxis2_temp, intensity2,20, 'g-', label='Intensity profile green')#intensity2, 'r-', label='Intensity profile blue')
+        ax2.plot(angleXaxis2_temp, intensity2,20, color='green', label='Intensity profile green')#intensity2, 'r-', label='Intensity profile blue')
         ax2.set_ylabel('Intensity');
         ax2.legend()
     
